@@ -1,5 +1,7 @@
 <template>
   <HeaderComp />
+
+  <RouterView></RouterView>
 </template>
 
 <script>
