@@ -10,7 +10,10 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-dark">Create</button>
+                    <button class="btn btn-dark">
+                        Create
+                        <span v-if="loading" class="spinner-border spinner-border-sm"></span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -26,17 +29,20 @@ export default {
         const store = useStore();
         const title = ref("");
         const titleErrorText = ref("");
+        const loading = ref(false);
 
-        function storeTask() {
+        async function storeTask() {
             if (title.value === "") {
                 titleErrorText.value = "Title is Requried.";
             } else {
                 titleErrorText.value = "";
-
+                loading.value = true;
+                await store.dispatch('storeTask', title.value);
+                loading.value = false;
             }
         }
 
-        return { storeTask, title, titleErrorText }
+        return { storeTask, title, titleErrorText, loading }
     }
 }
 </script>

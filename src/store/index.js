@@ -4,16 +4,20 @@ import Swal from "sweetalert2";
 
 const store = createStore({
     state: {
-        task: []
+        tasks: []
     },
     getters: {
         allTasks(state) {
-            return state.task
+            return state.tasks
         }
     },
     mutations: {
         setTasks(state, tasks) {
-            state.task = tasks;
+            state.tasks = tasks;
+        },
+
+        newTask(state, task) {
+            state.tasks.unshift(task)
         }
     },
     actions: {
@@ -35,6 +39,35 @@ const store = createStore({
             try {
                 const res = await axios.get(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}`);
                 commit('setTasks', res.data);
+            } catch (err) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "We have a problem here!!",
+                    icon: "error",
+                    confirmButtonText: "OK-_-",
+                })
+            }
+        },
+
+        async storeTask({ commit }, title) {
+            try {
+                const res = await axios.post(`https://jsonplaceholder.typicode.com/todos`, {
+                    title: title,
+                    completed: false,
+                });
+
+                commit('newTask', res.data);
+
+                Swal.fire({
+                    title: "Task added :) ",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    timer: 3000,
+                    toast: true,
+                    position: 'top',
+                })
+
             } catch (err) {
                 Swal.fire({
                     title: "Error!",
