@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createStore } from "vuex";
+import Swal from "sweetalert2";
 
 const store = createStore({
     state: {
@@ -21,7 +22,12 @@ const store = createStore({
                 const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
                 commit('setTasks', res.data);
             } catch (err) {
-                console.log(err);
+                Swal.fire({
+                    title: "Error!",
+                    text: "We have a problem here!!",
+                    icon: "error",
+                    confirmButtonText: "OK-_-",
+                })
             }
         }
     }
