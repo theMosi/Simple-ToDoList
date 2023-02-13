@@ -16,9 +16,13 @@
       <div class="row g-3">
         <div v-for="task in tasks" :key="task.id" class="col-md-4">
           <div class="card" :class="{ 'bg-light': task.completed }">
-            <div class="card-body">
-              <del v-if="task.completed"> {{ task.title }} </del>
-              <div v-else> {{ task.title }} </div>
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <del v-if="task.completed"> {{ task.title }} </del>
+                <div v-else> {{ task.title }} </div>
+              </div>
+
+              <UpdateTaskComp :task="task" />
             </div>
           </div>
         </div>
@@ -32,11 +36,13 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import FilterTaskComp from '../components/tasks/FilterTaskComp.vue';
 import CreateTaskComp from '../components/tasks/CreateTaskComp.vue';
+import UpdateTaskComp from '../components/tasks/UpdateTaskComp.vue';
 
 export default {
   components: {
     FilterTaskComp,
     CreateTaskComp,
+    UpdateTaskComp
   },
   setup() {
 
