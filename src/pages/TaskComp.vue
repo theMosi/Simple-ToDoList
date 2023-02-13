@@ -10,6 +10,9 @@
     </div>
 
     <div v-else class="container mt-5">
+      <CreateTaskComp />
+      <hr>
+      <FilterTaskComp />
       <div class="row g-3">
         <div v-for="task in tasks" :key="task.id" class="col-md-4">
           <div class="card" :class="{ 'bg-light': task.completed }">
@@ -27,9 +30,14 @@
 <script>
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import FilterTaskComp from '../components/tasks/FilterTaskComp.vue';
+import CreateTaskComp from '../components/tasks/CreateTaskComp.vue';
 
 export default {
-
+  components: {
+    FilterTaskComp,
+    CreateTaskComp,
+  },
   setup() {
 
     const store = useStore();

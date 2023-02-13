@@ -29,6 +29,20 @@ const store = createStore({
                     confirmButtonText: "OK-_-",
                 })
             }
+        },
+
+        async filterTasks({ commit }, limit) {
+            try {
+                const res = await axios.get(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}`);
+                commit('setTasks', res.data);
+            } catch (err) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "We have a problem here!!",
+                    icon: "error",
+                    confirmButtonText: "OK-_-",
+                })
+            }
         }
     }
 })
