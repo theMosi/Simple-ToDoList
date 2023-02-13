@@ -22,7 +22,12 @@
                 <div v-else> {{ task.title }} </div>
               </div>
 
-              <UpdateTaskComp :task="task" />
+              <div class="d-flex align-items-center">
+                <UpdateTaskComp :task="task" />
+
+
+                <DeleteTaskComp :id="task.id" />
+              </div>
             </div>
           </div>
         </div>
@@ -37,22 +42,24 @@ import { useStore } from 'vuex';
 import FilterTaskComp from '../components/tasks/FilterTaskComp.vue';
 import CreateTaskComp from '../components/tasks/CreateTaskComp.vue';
 import UpdateTaskComp from '../components/tasks/UpdateTaskComp.vue';
+import DeleteTaskComp from '../components/tasks/DeleteTaskComp.vue';
 
 export default {
   components: {
     FilterTaskComp,
     CreateTaskComp,
-    UpdateTaskComp
+    UpdateTaskComp,
+    DeleteTaskComp
   },
   setup() {
 
     const store = useStore();
-    const tasks = computed(() => store.getters.allTasks)
+    const tasks = computed(() => store.getters['task/allTasks'])
     const loading = ref(false);
 
     async function fetchTasks() {
       loading.value = true;
-      await store.dispatch('fetchTasks');
+      await store.dispatch('task/fetchTasks');
       loading.value = false;
     }
 
