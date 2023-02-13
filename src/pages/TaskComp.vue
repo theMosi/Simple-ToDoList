@@ -38,7 +38,7 @@
 
 <script>
 import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import { useTaskStore } from '../store/task';
 import FilterTaskComp from '../components/tasks/FilterTaskComp.vue';
 import CreateTaskComp from '../components/tasks/CreateTaskComp.vue';
 import UpdateTaskComp from '../components/tasks/UpdateTaskComp.vue';
@@ -53,13 +53,13 @@ export default {
   },
   setup() {
 
-    const store = useStore();
-    const tasks = computed(() => store.getters['task/allTasks'])
+    const store = useTaskStore();
+    const tasks = computed(() => store.allTasks)
     const loading = ref(false);
 
     async function fetchTasks() {
       loading.value = true;
-      await store.dispatch('task/fetchTasks');
+      await store.fetchTasks();
       loading.value = false;
     }
 

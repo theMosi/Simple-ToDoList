@@ -7,19 +7,19 @@
 
 <script>
 import { ref } from 'vue';
-import { useStore } from 'vuex';
+import { useTaskStore } from '../../store/task';
 
 
 export default {
     props: ['id'],
 
     setup(props) {
-        const store = useStore();
+        const store = useTaskStore();
         const loading = ref(false);
 
         async function deleteTask() {
             loading.value = true;
-            await store.dispatch('task/deleteTask', props.id);
+            await store.deleteTask(props.id);
             loading.value = false;
         }
 

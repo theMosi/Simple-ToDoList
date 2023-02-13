@@ -10,19 +10,19 @@
 
 <script>
 import { ref } from 'vue';
-import { useStore } from 'vuex';
+import { useTaskStore } from '../../store/task';
 
 
 export default {
     props: ['task'],
 
     setup() {
-        const store = useStore();
+        const store = useTaskStore();
         const loading = ref(false);
 
         async function updateTask(task) {
             loading.value = true;
-            await store.dispatch('task/updateTask', task);
+            await store.updateTask(task);
             loading.value = false;
         }
 

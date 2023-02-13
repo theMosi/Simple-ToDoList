@@ -1,3 +1,4 @@
+import { defineStore } from "pinia";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -5,43 +6,23 @@ import Swal from "sweetalert2";
 
 
 
-const task = {
-    namespaced: true,
+export const useTaskStore = defineStore('task', {
 
-    state: {
-        tasks: []
+    state: () => {
+        return {
+            tasks: []
+        }
     },
     getters: {
         allTasks(state) {
             return state.tasks
         }
     },
-    mutations: {
-        setTasks(state, tasks) {
-            state.tasks = tasks;
-        },
-
-        newTask(state, task) {
-            state.tasks.unshift(task)
-        },
-
-        updateTask(state, updatedTask) {
-            const index = state.tasks.findIndex(task => task.id === updatedTask.id);
-
-            if (index != -1) {
-                state.tasks.splice(index, 1, updatedTask);
-            }
-        },
-
-        removeTask(state, id) {
-            state.tasks = state.tasks.filter(task => task.id != id)
-        }
-    },
     actions: {
-        async fetchTasks({ commit }) {
+        async fetchTasks() {
             try {
                 const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
-                commit('setTasks', res.data);
+                this.tasks = res.data;
             } catch (err) {
                 Swal.fire({
                     title: "Error!",
@@ -52,10 +33,10 @@ const task = {
             }
         },
 
-        async filterTasks({ commit }, limit) {
+        async filterTasks(limit) {
             try {
                 const res = await axios.get(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}`);
-                commit('setTasks', res.data);
+                this.tasks = res.data;
             } catch (err) {
                 Swal.fire({
                     title: "Error!",
@@ -66,14 +47,14 @@ const task = {
             }
         },
 
-        async storeTask({ commit }, title) {
+        async storeTask(title) {
             try {
                 const res = await axios.post(`https://jsonplaceholder.typicode.com/todos`, {
                     title: title,
                     completed: false,
                 });
 
-                commit('newTask', res.data);
+                this.tasks.unshift(res.data);
 
                 Swal.fire({
                     title: "Task added :) ",
@@ -95,7 +76,7 @@ const task = {
             }
         },
 
-        async updateTask({ commit }, task) {
+        async updateTask(task) {
             try {
                 const res = await axios.put(`https://jsonplaceholder.typicode.com/todos/${task.id}`, {
                     title: task.title,
@@ -103,7 +84,11 @@ const task = {
                     completed: !task.completed,
                 });
 
-                commit('updateTask', res.data);
+                const index = this.tasks.findIndex(task => task.id === res.data.id);
+
+                if (index != -1) {
+                    this.tasks.splice(index, 1, res.data);
+                }
 
                 Swal.fire({
                     title: "Task updated :) ",
@@ -125,11 +110,11 @@ const task = {
             }
         },
 
-        async deleteTask({ commit }, id) {
+        async deleteTask(id) {
             try {
                 await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
 
-                commit('removeTask', id);
+                this.tasks = this.tasks.filter(task => task.id != id)
 
                 Swal.fire({
                     title: "Task deleted :) ",
@@ -151,6 +136,4 @@ const task = {
             }
         }
     }
-}
-
-export default task;
+})
