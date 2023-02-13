@@ -1,22 +1,19 @@
 <template>
-  <h2>Home</h2>
-
-  {{ count }}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center mt-5">
+        <h1>Hmm</h1>
+        <p class="mt-4">
+          Hmm Hpsum is a fictional text by me and you gonna read this because I decide this for you.
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
 
 export default {
-
-  setup() {
-    const store = useStore();
-    const count = computed(() => store.state.count)
-
-    return { count }
-
-  }
 
 }
 </script>
