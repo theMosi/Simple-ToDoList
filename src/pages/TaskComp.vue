@@ -1,7 +1,7 @@
 <template>
   <h2>Task Comp</h2>
 
-  {{ count }}
+  {{ tasks }}
 </template>
 
 <script>
@@ -11,10 +11,17 @@ import { useStore } from 'vuex';
 export default {
 
   setup() {
-    const store = useStore();
-    const count = computed(() => store.state.count)
 
-    return { count }
+    const store = useStore();
+    const tasks = computed(() => store.getters.allTasks)
+
+    function fetchTasks() {
+      store.dispatch('fetchTasks');
+    }
+
+    fetchTasks()
+
+    return { tasks }
 
   }
 
